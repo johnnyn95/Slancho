@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:title="@string/mi_settings"
+            android:parentActivityName=".MainActivity">
+
+        </activity>
+
+        <activity
+            android:name=".AboutActivity"
+            android:title="@string/mi_about"
+            android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

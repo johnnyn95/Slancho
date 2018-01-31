@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Slancho</string>
+
+    <string name="linkedInLink">https://www.linkedin.com/in/johnnyn95/</string>
+    <string name="about_description">This application is made for fully educational purposes! Clicking the picture will send you to my LinkedIn page.</string>
+    <string name="mi_share_weather">Share</string>
+    <string name="mi_settings">Settings</string>
+    <string name="mi_about">About</string>
 </resources>
