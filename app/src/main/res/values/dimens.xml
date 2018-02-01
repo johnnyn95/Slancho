@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="list_item_icon">40dp</dimen>
+
+    <dimen name="forecast_detail_horizontal_padding">32dp</dimen>
+    <dimen name="forecast_detail_vertical_padding">16dp</dimen>
+    <dimen name="forecast_list_item_padding">8dp</dimen>
+    <dimen name="about_image_dimens">42dp</dimen>
+</resources>

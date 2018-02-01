@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:paddingLeft="@dimen/forecast_detail_horizontal_padding"
+    android:paddingRight="@dimen/forecast_detail_horizontal_padding"
+    android:paddingBottom="@dimen/forecast_detail_vertical_padding"
+    android:paddingTop="@dimen/forecast_detail_vertical_padding">
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <ImageView
+        android:id="@+id/ic_list_item"
+        android:layout_width="@dimen/list_item_icon"
+        android:layout_height="@dimen/list_item_icon"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/forecast_list_item_padding"
+        android:layout_marginLeft="@dimen/forecast_list_item_padding"
+        android:layout_marginStart="@dimen/forecast_list_item_padding"
+        app:layout_constraintBottom_toTopOf="@+id/tv_description"
+        app:layout_constraintStart_toEndOf="@+id/ic_list_item"
+        tools:text="Today,31 February" />
+
+    <TextView
+        android:id="@+id/tv_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/forecast_list_item_padding"
+        android:layout_marginLeft="@dimen/forecast_list_item_padding"
+        android:layout_marginTop="@dimen/forecast_list_item_padding"
+        app:layout_constraintStart_toStartOf="@+id/tv_date"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        tools:text="Sunny" />
+
+    <TextView
+        android:id="@+id/tv_max_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/forecast_list_item_padding"
+        android:layout_marginRight="@dimen/forecast_list_item_padding"
+        android:layout_marginTop="@dimen/forecast_list_item_padding"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toStartOf="@+id/tv_min_temp"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        tools:text="3" />
+
+    <TextView
+        android:id="@+id/tv_min_temp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/forecast_list_item_padding"
+        android:layout_marginRight="@dimen/forecast_list_item_padding"
+        tools:text="-1"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+
+</android.support.constraint.ConstraintLayout>
