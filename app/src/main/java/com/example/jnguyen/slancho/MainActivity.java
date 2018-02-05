@@ -4,17 +4,20 @@ import android.app.LoaderManager;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.jnguyen.slancho.Utilities.NetworkUtilities;
 
+import java.io.IOException;
 import java.net.URL;
 //TODO Implement Settings/Preferences
 //TODO Implement Share Function
@@ -24,7 +27,7 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor>{
-
+    TextView mTest;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
@@ -65,9 +68,10 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
 
         //TODO test network utilities
-        TextView test = (TextView) findViewById(R.id.tv_test);
-        URL testUrl = NetworkUtilities.buildURLforFiveDays("Sofia");
+        mTest = findViewById(R.id.tv_test);
 
+        URL weatherUrl =  NetworkUtilities.buildURLforFiveDays("sofia,bulgaria");
+        new queryTask().execute(weatherUrl);
 
     }
 
@@ -84,5 +88,28 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    public class queryTask extends AsyncTask<URL,Void,String>{
+        @Override
+        protected String doInBackground(URL... urls) {
+            URL testUrl = urls[0];
+            String testResult = null;
+            try {
+                testResult = NetworkUtilities.getResponseFromHttpUrl(testUrl);
+                mTest.setText(testResult);
+            }catch (IOException e){
+                e.printStackTrace();
+
+            }
+            return testResult;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s != null && !s.equals("")){
+                mTest.setText(s);
+            }
+        }
     }
 }

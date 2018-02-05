@@ -25,9 +25,9 @@ public final class NetworkUtilities {
     private static final int numDays = 5;
 
     private static final String API_KEY = "80bb668417181903a5fcd4b7b4dd0910";
-    private static final String BASE_URL = "api.openweathermap.org/data/2.5/weather";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast";
 
-    final static String QUERY_PARAM = "?q=";
+    final static String QUERY_PARAM = "?q=";//"?q=";
     final static String QUERY_API = "&appid=";
 
     final static String LAT_PARAM = "lat";
@@ -40,16 +40,17 @@ public final class NetworkUtilities {
 
     public static URL buildURLforFiveDays(String location){
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
-                .appendQueryParameter(QUERY_PARAM,location)
-                .appendQueryParameter(QUERY_API,API_KEY)
+                .appendEncodedPath(QUERY_PARAM + location + QUERY_API + API_KEY)
                 .build();
+
         URL url = null;
         try {
+
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e){
             e.printStackTrace();
         }
-        Log.v(TAG,"Built URL" + url);
+        Log.v(TAG,"Built URL " + url);
         return url;
     }
 

@@ -4,6 +4,7 @@
 
     <dimen name="forecast_detail_horizontal_padding">32dp</dimen>
     <dimen name="forecast_detail_vertical_padding">16dp</dimen>
-    <dimen name="forecast_list_item_padding">8dp</dimen>
+    <dimen name="forecast_list_item_padding">6dp</dimen>
+    <dimen name="forecast_list_text_size">42sp</dimen>
     <dimen name="about_image_dimens">42dp</dimen>
 </resources>
