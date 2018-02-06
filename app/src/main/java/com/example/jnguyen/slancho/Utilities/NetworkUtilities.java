@@ -29,7 +29,7 @@ public final class NetworkUtilities {
 
     final static String QUERY_PARAM = "?q=";//"?q=";
     final static String QUERY_API = "&appid=";
-
+    final static String dummyDATA = "https://andfun-weather.udacity.com/staticweather";
     final static String LAT_PARAM = "lat";
     final static String LON_PARAM = "lon";
     final static String FORMAT_PARAM = "mode";
@@ -52,6 +52,20 @@ public final class NetworkUtilities {
         }
         Log.v(TAG,"Built URL " + url);
         return url;
+    }
+
+    public static URL returnDummyData(){
+        Uri dummyUri = Uri.parse(dummyDATA).buildUpon().build();
+
+        URL dummyUrl = null;
+        try {
+
+            dummyUrl = new URL(dummyUri.toString());
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }
+        Log.v(TAG,"Built URL " + dummyUrl);
+        return dummyUrl;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
