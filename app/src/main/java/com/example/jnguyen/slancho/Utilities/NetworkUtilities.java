@@ -64,7 +64,7 @@ public final class NetworkUtilities {
         } catch (MalformedURLException e){
             e.printStackTrace();
         }
-        Log.v(TAG,"Built URL " + dummyUrl);
+        Log.v(TAG,"Built DUMMY URL " + dummyUrl);
         return dummyUrl;
     }
 

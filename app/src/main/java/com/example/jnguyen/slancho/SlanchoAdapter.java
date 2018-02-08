@@ -39,11 +39,8 @@ public class SlanchoAdapter extends RecyclerView.Adapter<SlanchoAdapter.SlanchoA
 
     @Override
     public int getItemCount() {
-        if(mWeatherData.length == 0){
-            return 0;
-        }else {
-            return  mWeatherData.length;
-        }
+        if (mWeatherData == null) return 0;
+        return mWeatherData.length;
 
     }
 
@@ -60,6 +57,7 @@ public class SlanchoAdapter extends RecyclerView.Adapter<SlanchoAdapter.SlanchoA
         //public final TextView tv_MaxTemp;
         //public final TextView tv_MinTemp;
         public final TextView tv_weather_data;
+
         public SlanchoAdapterViewHolder(View view){
             super(view);
             //ic_weather = (ImageView) view.findViewById(R.id.ic_list_item) ;
@@ -67,7 +65,7 @@ public class SlanchoAdapter extends RecyclerView.Adapter<SlanchoAdapter.SlanchoA
             //tv_Description = view.findViewById(R.id.tv_description);
             //tv_MaxTemp = view.findViewById(R.id.tv_max_temp);
             //tv_MinTemp = view.findViewById(R.id.tv_min_temp);
-            tv_weather_data = view.findViewById(R.id.recyclerview_forecast);
+            tv_weather_data = (TextView) view.findViewById(R.id.recyclerview_forecast);
         }
     }
 }
