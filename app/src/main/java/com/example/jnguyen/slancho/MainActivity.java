@@ -1,27 +1,30 @@
 package com.example.jnguyen.slancho;
 
-
+import android.app.LoaderManager;
+import android.content.Context;
 import android.content.Intent;
-
-
-import android.os.AsyncTask;
-import android.support.v4.app.ShareCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import java.io.IOException;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.net.URL;
 
 import com.example.jnguyen.slancho.Data.SlanchoPreferences;
 import com.example.jnguyen.slancho.Utilities.NetworkUtilities;
 import com.example.jnguyen.slancho.Utilities.OpenWeatherJsonUtils;
-import com.example.jnguyen.slancho.Utilities.SlanchoWeatherUtils;
 
 //TODO Implement Settings/Preferences
 //TODO Implement Share Function
@@ -29,10 +32,115 @@ import com.example.jnguyen.slancho.Utilities.SlanchoWeatherUtils;
 //TODO Create and Implement Adapter
 //TODO Create Content Provider
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        SlanchoAdapter.SlanchoAdapterOnClickHandler,
+        LoaderCallbacks<String[]>   {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private RecyclerView mRecyclerView;
     private SlanchoAdapter mAdapter;
 
+
+    private ProgressBar mLoadingIndicator;
+    private TextView mErrorMessageDisplay;
+
+    private static final int OPENWEATHER_LOADER_ID = 95;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mRecyclerView = findViewById(R.id.recyclerview_forecast);
+        mLoadingIndicator = findViewById(R.id.pb_loading_indicator);
+        mErrorMessageDisplay =  findViewById(R.id.tv_error_message_display);
+
+        LinearLayoutManager layoutManager =
+                new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+        mAdapter = new SlanchoAdapter(this);
+        mRecyclerView.setAdapter(mAdapter);
+
+        int loaderId = OPENWEATHER_LOADER_ID;
+
+        LoaderCallbacks<String[]> callback = MainActivity.this;
+        Bundle bundleForLoader = null;
+
+        getSupportLoaderManager().initLoader(loaderId,bundleForLoader,callback);
+    }
+
+    @Override
+    public Loader<String[]> onCreateLoader(int id,final Bundle loaderArgs) {
+        return new AsyncTaskLoader<String[]>(this) {
+            String[] mWeatherData = null;
+
+            @Override
+            protected void onStartLoading() {
+                if(mWeatherData != null){
+                    deliverResult(mWeatherData);
+                } else {
+                    mLoadingIndicator.setVisibility(View.VISIBLE);
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public String[] loadInBackground() {
+                String prefferedLocation = SlanchoPreferences.getPreferredWeatherLocation(MainActivity.this);
+
+                URL weatherUrl = NetworkUtilities.buildUrl(prefferedLocation);
+                try {
+                    String jsonWeatherResponse = NetworkUtilities.getResponseFromHttpUrl(weatherUrl);
+                    String[] jsonData = OpenWeatherJsonUtils
+                            .getSimpleWeatherStringsFromJson(MainActivity.this,jsonWeatherResponse);
+
+                    return jsonData;
+                } catch (Exception e){
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            public void deliverResult(String[] data) {
+                mWeatherData = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<String[]> loader, String[] data) {
+        mLoadingIndicator.setVisibility(View.INVISIBLE);
+        mAdapter.setWeatherData(data);
+        if (null == data) {
+            showErrorMessage();
+        } else {
+            showWeatherDataView();
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<String[]> loader) {
+
+    }
+
+    private void invalidateData() {
+
+        mAdapter.setWeatherData(null);
+    }
+
+    @Override
+    public void onClick(String weather) {
+        Context context = this;
+        Class destinationClass = DetailActivity.class;
+        Intent intent = new Intent(context,destinationClass);
+        intent.putExtra(Intent.EXTRA_TEXT,weather);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -44,10 +152,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemClickedId = item.getItemId();
         switch (itemClickedId){
+
             case R.id.action_settings :
                 Intent settingsIntent = new Intent(this,SettingsActivity.class);
                 startActivity(settingsIntent);
                 return true;
+
             case R.id.action_share :
                 //TODO Implement/Decide what type of data to share
                 String mimeType = "text/plain";
@@ -60,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                         .setText(textToShare)
                         .startChooser();
                 return true;
+
             case R.id.action_about :
                 Intent aboutIntent = new Intent(this,AboutActivity.class);
                 startActivity(aboutIntent);
@@ -68,51 +179,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_forecast);
-        mAdapter = new SlanchoAdapter();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
-        mRecyclerView.setLayoutManager(layoutManager);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mAdapter);
+    private void showWeatherDataView() {
 
-        performAsyncTask();
+        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
-    private void performAsyncTask(){
-        //URL weatherUrl =  NetworkUtilities.buildURLforFiveDays("sofia,bulgaria");
-        String weatherData = SlanchoPreferences.getPreferredWeatherLocation(this);
-        new queryTask().execute(weatherData);
-    }
-
-
-    public class queryTask extends AsyncTask<String,Void,String[]>{
-        @Override
-        protected String[] doInBackground(String... params) {
-            if(params.length == 0 ){
-                return null;
-            }
-
-            String result = params[0];
-            URL weatherRequestedUrl = NetworkUtilities.buildURLforFiveDays(result);
-            //URL weatherRequestedUrl = NetworkUtilities.returnDummyData();
-            try {
-                String jsonWeatherResponse = NetworkUtilities.getResponseFromHttpUrl(weatherRequestedUrl);
-                String[] simpleJsonWeatherData = OpenWeatherJsonUtils.getSimpleWeatherStringsFromJson(MainActivity.this,jsonWeatherResponse);
-                return simpleJsonWeatherData;
-            }catch (Exception e){
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String[] weatherData) {
-            super.onPostExecute(weatherData);
-            mAdapter.setWeatherData(weatherData);
-        }
+    private void showErrorMessage() {
+        mRecyclerView.setVisibility(View.INVISIBLE);
+        mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 }

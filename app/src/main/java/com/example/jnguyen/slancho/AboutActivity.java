@@ -15,7 +15,7 @@ public class AboutActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
-        TextView mDescription = findViewById(R.id.about_description);
+        TextView mDescription = (TextView) findViewById(R.id.about_description);
         String aboutDescription = getResources().getString( R.string.about_description);
         mDescription.setText(aboutDescription);
     }

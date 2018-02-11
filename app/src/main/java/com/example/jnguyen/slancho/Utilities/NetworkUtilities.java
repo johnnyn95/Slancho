@@ -16,29 +16,31 @@ import java.util.Scanner;
 
 public final class NetworkUtilities {
  //TODO implement Network Utilities
-
     private static final String TAG = NetworkUtilities.class.getSimpleName();
 
+    private static final String DYNAMIC_WEATHER_URL =
+            "https://andfun-weather.udacity.com/weather";
+    private static final String STATIC_WEATHER_URL =
+            "https://andfun-weather.udacity.com/staticweather";
+    private static final String FORECAST_BASE_URL = STATIC_WEATHER_URL;
 
     private static final String format = "json";
     private static final String units = "metric";
-    private static final int numDays = 5;
+    private static final int numDays = 14;
 
-    private static final String API_KEY = "80bb668417181903a5fcd4b7b4dd0910";
-    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast";
-
-    final static String QUERY_PARAM = "?q=";//"?q=";
-    final static String QUERY_API = "&appid=";
-    final static String dummyDATA = "https://andfun-weather.udacity.com/staticweather";
+    final static String QUERY_PARAM = "q";
     final static String LAT_PARAM = "lat";
     final static String LON_PARAM = "lon";
     final static String FORMAT_PARAM = "mode";
     final static String UNITS_PARAM = "units";
     final static String DAYS_PARAM = "cnt";
+    final static String QUERY_API = "&appid=";
+    final static String dummyDATA = "https://andfun-weather.udacity.com/staticweather";
 
-    private static final String DUMMY_WEATHER_URL = "http://samples.openweathermap.org/data/2.5/forecast?q=M%C3%BCnchen,DE&appid=b6907d289e10d714a6e88b30761fae22";
+    private static final String API_KEY = "80bb668417181903a5fcd4b7b4dd0910";
+    private static final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast";
 
-    public static URL buildURLforFiveDays(String location){
+    public static URL buildUrlforFiveDays(String location){
         Uri builtUri = Uri.parse(BASE_URL).buildUpon()
                 .appendEncodedPath(QUERY_PARAM + location + QUERY_API + API_KEY)
                 .build();
@@ -54,18 +56,24 @@ public final class NetworkUtilities {
         return url;
     }
 
-    public static URL returnDummyData(){
-        Uri dummyUri = Uri.parse(dummyDATA).buildUpon().build();
+    public static URL buildUrl(String locationQuery) {
+        Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
+                .appendQueryParameter(QUERY_PARAM, locationQuery)
+                .appendQueryParameter(FORMAT_PARAM, format)
+                .appendQueryParameter(UNITS_PARAM, units)
+                .appendQueryParameter(DAYS_PARAM, Integer.toString(numDays))
+                .build();
 
-        URL dummyUrl = null;
+        URL url = null;
         try {
-
-            dummyUrl = new URL(dummyUri.toString());
-        } catch (MalformedURLException e){
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        Log.v(TAG,"Built DUMMY URL " + dummyUrl);
-        return dummyUrl;
+
+        Log.v(TAG, "Built URI " + url);
+
+        return url;
     }
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {

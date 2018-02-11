@@ -13,7 +13,7 @@ public class SlanchoPreferences {
     public static final String PREF_COORD_LAT = "coord_lat";
     public static final String PREF_COORD_LONG = "coord_long";
 
-    private static final String DEFAULT_WEATHER_LOCATION = "sofia,bulgaria";
+    private static final String DEFAULT_WEATHER_LOCATION = "94043,USA";
     private static final double[] DEFAULT_WEATHER_COORDINATES = {37.4284, 122.0724};
 
     private static final String DEFAULT_MAP_LOCATION =
