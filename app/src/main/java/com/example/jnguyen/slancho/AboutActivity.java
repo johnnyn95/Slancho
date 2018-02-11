@@ -20,7 +20,7 @@ public class AboutActivity extends AppCompatActivity {
         mDescription.setText(aboutDescription);
     }
 
-    private  void openLinkedInProfile(View v){
+    public void openLinkedInProfile(View v){
         String linkedInLink = getResources().getString( R.string.linkedInLink);
         Uri uri = Uri.parse(linkedInLink);
         Intent webpageIntent = new Intent(Intent.ACTION_VIEW,uri);

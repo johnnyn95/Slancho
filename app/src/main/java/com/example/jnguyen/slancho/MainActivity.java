@@ -158,19 +158,6 @@ public class MainActivity extends AppCompatActivity implements
                 startActivity(settingsIntent);
                 return true;
 
-            case R.id.action_share :
-                //TODO Implement/Decide what type of data to share
-                String mimeType = "text/plain";
-                String title = "Weather shared from Slancho App!";
-                String textToShare = "Today the weather will be Sunny, MAX TEMP:10 MIN TEMP:3";
-
-                ShareCompat.IntentBuilder.from(this)
-                        .setType(mimeType)
-                        .setChooserTitle(title)
-                        .setText(textToShare)
-                        .startChooser();
-                return true;
-
             case R.id.action_about :
                 Intent aboutIntent = new Intent(this,AboutActivity.class);
                 startActivity(aboutIntent);
