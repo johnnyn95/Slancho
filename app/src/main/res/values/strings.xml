@@ -1,7 +1,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
     <string name="app_name">Slancho</string>
 
-    <string name="linkedInLink">https://www.linkedin.com/in/johnnyn95/</string>
+    <string name="linkedInLink" translatable="false" >https://www.linkedin.com/in/johnnyn95/</string>
     <string name="about_description">This application is made for fully educational purposes! Clicking the picture will send you to my LinkedIn page.</string>
     <string name="mi_share_weather">Share</string>
     <string name="mi_settings">Settings</string>
@@ -10,35 +11,39 @@
     <string name="error_message">Something went wrong! :(</string>
     <string name="today">Today</string>
 
-    <!-- For labelling tomorrow's forecast [CHAR LIMIT=15] -->
+    <string name="pref_location_default_value" translatable="false" >Sofia,Bulgaria</string>
+    <string name="pref_location_key" translatable="false" >location</string>
+    <string name="pref_location_label">Location</string>
+
+    <string name="pref_units_default_value" translatable="false" >metric</string>
+    <string name="pref_units_key" translatable="false" >units</string>
+    <string name="pref_units_label">Temperature Units</string>
+
+    <string name="pref_units_metric_label">Metric</string>
+    <string name="pref_units_imperial_label">Imperial</string>
+    <string name="pref_units_metric" translatable="false" >metric</string>
+    <string name="pref_units_imperial" translatable="false" >imperial</string>
+
+
+
     <string name="tomorrow">Tomorrow</string>
 
-    <!-- Date format [CHAR LIMIT=NONE] -->
     <string name="format_full_friendly_date">
         <xliff:g id="month">%1$s</xliff:g>, <xliff:g id="day">%2$s</xliff:g>
     </string>
 
-
-    <!-- - - - - - - - - - - - - - - -->
-    <!-- Used by SunshineWeatherUtils-->
-    <!-- - - - - - - - - - - - - - - -->
-
-    <!-- Temperature format in Celsius [CHAR LIMIT=5] -->
     <string name="format_temperature_celsius">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0C
     </string>
 
-    <!-- Temperature format in Fahrenheit [CHAR LIMIT=5] -->
     <string name="format_temperature_fahrenheit">
         <xliff:g id="temp">%1.0f</xliff:g>\u00B0F
     </string>
 
-    <!-- Wind in kph [CHAR LIMIT=25] -->
     <string name="format_wind_kmh">
         <xliff:g id="speed">%1$1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g>
     </string>
 
-    <!-- Wind in mph [CHAR LIMIT=25] -->
     <string name="format_wind_mph">
         <xliff:g id="speed">%1$1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g>
     </string>
@@ -61,11 +66,11 @@
     <string name="condition_602">Heavy Snow</string>
     <string name="condition_611">Sleet</string>
     <string name="condition_612">Shower Sleet</string>
-    <string name="condition_615">Rain and Snow</string> <!-- light rain and snow -->
+    <string name="condition_615">Rain and Snow</string>
     <string name="condition_616">Rain and Snow</string>
-    <string name="condition_620">Shower Snow</string> <!-- light shower snow -->
+    <string name="condition_620">Shower Snow</string>
     <string name="condition_621">Shower Snow</string>
-    <string name="condition_622">Shower Snow</string> <!-- heavy shower snow -->
+    <string name="condition_622">Shower Snow</string>
     <string name="condition_701">Mist</string>
     <string name="condition_711">Smoke</string>
     <string name="condition_721">Haze</string>
@@ -91,7 +96,7 @@
     <string name="condition_951">Calm</string>
     <string name="condition_952">Light Breeze</string>
     <string name="condition_953">Gentle Breeze</string>
-    <string name="condition_954">Breeze</string> <!-- moderate breeze -->
+    <string name="condition_954">Breeze</string>
     <string name="condition_955">Fresh Breeze</string>
     <string name="condition_956">Strong Breeze</string>
     <string name="condition_957">High Wind</string>

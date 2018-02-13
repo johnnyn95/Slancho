@@ -3,8 +3,10 @@ package com.example.jnguyen.slancho;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.content.AsyncTaskLoader;
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
         Bundle bundleForLoader = null;
 
         getSupportLoaderManager().initLoader(loaderId,bundleForLoader,callback);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
