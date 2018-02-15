@@ -7,42 +7,12 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceScreen;
-import android.widget.CheckBox;
 
 /**
  * Created by JNguyen on 12.2.2018.
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-    }
-
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        addPreferencesFromResource(R.xml.pref_general);
-
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
-        PreferenceScreen preferenceScreen = getPreferenceScreen();
-        int numberOfPreferences = preferenceScreen.getPreferenceCount();
-
-        for (int i = 0;i < numberOfPreferences;i++){
-            Preference preference = preferenceScreen.getPreference(i);
-            if(!(preference instanceof CheckBoxPreference)){
-                String preferenceValue = sharedPreferences.getString(preference.getKey(),"");
-                setPreferenceSummary(preference,preferenceValue);
-            }
-        }
-    }
 
     private void setPreferenceSummary(Preference preference,Object preferenceValue){
         String value = preferenceValue.toString();
@@ -55,10 +25,41 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
             if(preferenceIndex >= 0 ){
                 listPreference.setSummary(listPreference.getEntries()[preferenceIndex]);
-            } else {
-                preference.setSummary(value);
             }
         }
+        else {
+            preference.setSummary(value);
+        }
+    }
+
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        addPreferencesFromResource(R.xml.pref_general);
+
+        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        PreferenceScreen preferenceScreen = getPreferenceScreen();
+        int numberOfPreferences = preferenceScreen.getPreferenceCount();
+
+        for (int i = 0 ;i < numberOfPreferences; i++){
+            Preference preference = preferenceScreen.getPreference(i);
+
+            if(!(preference instanceof CheckBoxPreference)){
+                String preferenceValue = sharedPreferences.getString(preference.getKey(),"");
+                setPreferenceSummary(preference,preferenceValue);
+            }
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 
     @Override
