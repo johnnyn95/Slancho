@@ -1,5 +1,6 @@
 package com.example.jnguyen.slancho.Data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -17,5 +18,14 @@ public class OpenWeatherContract {
         public static final String COLUMN_PRESSURE = "pressure";
         public static final String COLUMN_WIND_SPEED = "wind";
         public static final String COLUMN_DEGREES = "degrees";
+
+
+        public static final String PATH_WEATHER = "weather";
+
+        public static final String CONTENT_AUTHORITY = "com.example.android.sunshine";
+        public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
+        public  static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_WEATHER)
+                .build();
     }
 }
