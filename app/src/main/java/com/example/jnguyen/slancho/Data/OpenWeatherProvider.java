@@ -5,9 +5,12 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.example.jnguyen.slancho.Utilities.SlanchoDateUtils;
 
 /**
  * Created by JNguyen on 18.2.2018.
@@ -91,5 +94,38 @@ public class OpenWeatherProvider extends ContentProvider {
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+
+        switch (uriMatcher.match(uri)) {
+            case CODE_WEATHER:
+                db.beginTransaction();
+                int rowsInserted = 0;
+                try {
+                    for (ContentValues value : values) {
+                        long weatherDate = value.getAsLong(OpenWeatherContract.OpenWeatherEntry.COLUMN_DATE);
+                        if (!SlanchoDateUtils.isDateNormalized(weatherDate)) {
+                            throw new IllegalArgumentException("Date must be normalized to insert!");
+                        }
+                        long _id = db.insert(OpenWeatherContract.OpenWeatherEntry.TABLE_NAME, null, value);
+                        if (_id != -1) {
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+                } finally {
+                    db.endTransaction();
+                }
+                if (rowsInserted > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return rowsInserted;
+            default:
+                return super.bulkInsert(uri, values);
+        }
+
     }
 }
